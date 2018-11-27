@@ -41,11 +41,11 @@ q = input_block;
                 diference = block_result -image_result ; 
                 End
 
-              store(MSE1 ,diff1);
+              store(image_result ,diff1);
                diff1= diff1+16;
                 MSE1 = MSE1 +  diference*diference;
 
-		store(MSE1, diff2);
+		store(block_result, diff2);
 		diff2 = diff2+16;
                 
 
@@ -83,7 +83,7 @@ int main()
   SharedArray<int> a(size*size), b(size*size), r(16),diff1(size*size),diff2(size*size);
   srand(0);
   for (int i = 0; i < size*size; i++) {
-    a[i] = 0;
+    a[i] = i;
     b[i] =255;
     diff1[i]=0;
     diff2[i] =0;
@@ -93,7 +93,7 @@ for (int i = 0 ; i<16 ;i++){
 r[i] = 0;
 }
 
-k.setNumQPUs(1);
+k.setNumQPUs(4);
   // Invoke the kernel and display the result
   k(&a, &b, &r,&diff1,&diff2,size);
  
@@ -102,13 +102,14 @@ cout << "image_result : "<<endl;
 {      if (i%16 ==0 )cout<<endl;
          	cout<<diff1[i]<<'\t';
  } 
-
+/*
 cout << "block_result : "<<endl;
+
   for (int i = 0; i < size*size; i++)
 {      if (i%16 ==0 )cout<<endl;
                 cout<<diff2[i]<<'\t';
  } 
-
+*/
 cout<<" mse_out :"<<r[0];
 
   return 0;
